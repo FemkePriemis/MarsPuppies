@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Femke\\Desktop\\PuppyPlatform\\PuppyPlatform\\PuppyPlatform.csproj",
+      "projectUniqueName": "C:\\Users\\Femke\\Desktop\\Repos\\School\\IT_Master\\MarsPuppies\\PuppyPlatform\\PuppyPlatform\\PuppyPlatform.csproj",
       "projectName": "PuppyPlatform",
-      "projectPath": "C:\\Users\\Femke\\Desktop\\PuppyPlatform\\PuppyPlatform\\PuppyPlatform.csproj",
+      "projectPath": "C:\\Users\\Femke\\Desktop\\Repos\\School\\IT_Master\\MarsPuppies\\PuppyPlatform\\PuppyPlatform\\PuppyPlatform.csproj",
       "packagesPath": "C:\\Users\\Femke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Femke\\Desktop\\PuppyPlatform\\PuppyPlatform\\obj\\",
+      "outputPath": "C:\\Users\\Femke\\Desktop\\Repos\\School\\IT_Master\\MarsPuppies\\PuppyPlatform\\PuppyPlatform\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
