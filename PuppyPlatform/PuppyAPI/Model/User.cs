@@ -10,7 +10,7 @@
 
     public class Role //base class for Vet and Handler
     {
-        public List<int>? DogIDs { get; set; } //? means can be null
-
+        public string Name { get; set; }
+        public List<int>? DogIDs { get; set; } //? means can be null, the IDs of the dogs they can access
     }
 }

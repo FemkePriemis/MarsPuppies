@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using PuppyAPI.Model;
 
 namespace PuppyAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HandlersController : ControllerBase
+    public class UserController : ControllerBase
     {
         // GET: HandlerController
         [HttpGet]
@@ -18,8 +18,7 @@ namespace PuppyAPI.Controllers
         // POST: HandlersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Add")] //or create
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Role role)
         {
             try
             {
@@ -41,7 +40,6 @@ namespace PuppyAPI.Controllers
         // POST: HandlerController/Edit/5
         [HttpPut]
         [ValidateAntiForgeryToken]
-        [Route("{id}/Update")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -50,14 +48,13 @@ namespace PuppyAPI.Controllers
             }
             catch
             {
-                return Ok(); 
+                return Ok();
             }
         }
 
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
-        [Route("Remove")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
@@ -70,6 +67,5 @@ namespace PuppyAPI.Controllers
             }
         }
 
-        
     }
 }

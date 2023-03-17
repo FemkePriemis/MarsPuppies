@@ -1,6 +1,8 @@
 ﻿
 using Newtonsoft.Json;
 
+using JOS.Enumeration.Ours; //for enums
+
 namespace PuppyAPI.Model
 {
     public class Dog
@@ -11,30 +13,37 @@ namespace PuppyAPI.Model
         public string Gender { get; set; }
         public int Age { get; set; }
 
-        public int weight { get; set; }
+        public int Weight { get; set; }
 
         public Healthstatus Healthstatus { get; set; }
 
         public Biometrics Biometrics { get; set; }
         public Behaviour Behaviour { get; set; }
-
-
     }
 
     public class Healthstatus
     {
 
-        
-        public enum HEALTHSTATUS//how do I make this viewable in Swagger?
+        public class Healthstate : Enumeration //still not visible on the Swagger
         {
-           HEALTHY,
-           MEDICATED,
-           INJURED,
-           PREGNANT
+            public static Healthstate Healthy => new(1, "Healthy");
+            public static Healthstate Medicated => new(2, "Medicated");
+
+            public static Healthstate Injured => new(3, "Injured");
+
+            public static Healthstate Pregnant => new(4, "Pregnant");
+
+            public Healthstate (int id, string name)
+                : base(id, name)
+            {
+                
+            }
+
+            //cast to enum?
+
         }
 
-
-        public HEALTHSTATUS Status { get; set; }
+        public Healthstate Status { get; set; }
         public DateTime LastUpdated { get; set; }
         public List<string>? Injuries { get; set; } 
         public List<string>? Medications { get; set; }
@@ -47,8 +56,8 @@ namespace PuppyAPI.Model
     {
         public List<int>? Heartrate { get; set; }//? means nullable
         public int HeartrateThreshold { get; set; }
-        public List<int>? Temperature { get; set; }//? means nullable
-        public int TemperatureThreshold { get; set; }
+        public List<double>? Temperature { get; set; }//? means nullable
+        public double TemperatureThreshold { get; set; }
 
         public List<Grades>? ActivityGrades { get; set;}
         

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PuppyAPI.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum visualization
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PuppyAPIContext")));
 
 var app = builder.Build();
 
