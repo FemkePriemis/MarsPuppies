@@ -7,7 +7,8 @@ namespace PuppyAPI.Model
 {
     public class Dog
     {
-        public int Id { get; set; }
+
+        public Guid Id { get; set; }
         public string Name { get; set; }
 
         public string Gender { get; set; }
@@ -23,27 +24,7 @@ namespace PuppyAPI.Model
 
     public class Healthstatus
     {
-
-        public class Healthstate : Enumeration //still not visible on the Swagger
-        {
-            public static Healthstate Healthy => new(1, "Healthy");
-            public static Healthstate Medicated => new(2, "Medicated");
-
-            public static Healthstate Injured => new(3, "Injured");
-
-            public static Healthstate Pregnant => new(4, "Pregnant");
-
-            public Healthstate (int id, string name)
-                : base(id, name)
-            {
-                
-            }
-
-            //cast to enum?
-
-        }
-
-        public Healthstate Status { get; set; }
+        public string Healthstate { get; set; }
         public DateTime LastUpdated { get; set; }
         public List<string>? Injuries { get; set; } 
         public List<string>? Medications { get; set; }

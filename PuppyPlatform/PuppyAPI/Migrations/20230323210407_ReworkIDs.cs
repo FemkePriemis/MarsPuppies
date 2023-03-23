@@ -5,7 +5,7 @@
 namespace PuppyAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNestedObjectsDog : Migration
+    public partial class ReworkIDs : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

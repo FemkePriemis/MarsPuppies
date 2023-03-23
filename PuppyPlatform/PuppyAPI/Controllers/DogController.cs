@@ -48,16 +48,17 @@ namespace PuppyAPI.Controllers
 
         [HttpGet]
         [Route("healthstates")]
-        [ProducesResponseType(typeof(IEnumerable<Healthstatus.Healthstate>), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(IEnumerable<Healthstatus.Healthstate>), (int)HttpStatusCode.OK)]
         public IActionResult GetHealthStates()
         {
-            return Ok(new[]
-            {
-                Healthstatus.Healthstate.Healthy, //probably only want the description string to be send
-                Healthstatus.Healthstate.Medicated,
-                Healthstatus.Healthstate.Injured,
-                Healthstatus.Healthstate.Pregnant,
-        });
+            /* return Ok(new[]
+             {
+                 Healthstatus.Healthstate.Healthy, //probably only want the description string to be send
+                 Healthstatus.Healthstate.Medicated,
+                 Healthstatus.Healthstate.Injured,
+                 Healthstatus.Healthstate.Pregnant,
+         });*/
+            return Ok();
         }
 
         [HttpPost]

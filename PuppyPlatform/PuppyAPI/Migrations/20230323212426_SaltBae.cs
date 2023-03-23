@@ -5,25 +5,25 @@
 namespace PuppyAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserIDrole : Migration
+    public partial class SaltBae : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "UserID",
-                table: "Roles",
-                type: "int",
+            migrationBuilder.AddColumn<string>(
+                name: "Salt",
+                table: "Users",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UserID",
-                table: "Roles");
+                name: "Salt",
+                table: "Users");
         }
     }
 }
