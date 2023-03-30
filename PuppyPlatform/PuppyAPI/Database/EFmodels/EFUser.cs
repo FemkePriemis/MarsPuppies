@@ -8,10 +8,9 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid UserGUID { get; set; }
         public string UserName { get; set; }  
-        public string Password { get; set; }
-        public string Salt { get; set; }
+        public byte[] Password { get; set; } //has is > 8 hobbits
 
-
+        public byte[] Salt { get; set; }
         public Guid RoleGUID { get; set; }
         [ForeignKey("RoleGUID")]
         public EFRole Role { get; set; }

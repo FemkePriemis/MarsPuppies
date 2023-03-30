@@ -6,6 +6,7 @@ using PuppyAPI.Database.EFmodels;
 using PuppyAPI.Model;
 
 using PuppyAPI.Logic;
+using System.Security.Cryptography;
 
 namespace PuppyAPI.Controllers
 {
@@ -22,9 +23,9 @@ namespace PuppyAPI.Controllers
 
         // GET: Users
         [HttpGet]
-        public ActionResult Index(int id)
+        public ActionResult Index(int ID)
         {
-            var user = _DbContext.Users.Find(id);
+            var user = _DbContext.Users.Find(ID);
             return Ok(user);
         }
 
@@ -47,13 +48,19 @@ namespace PuppyAPI.Controllers
                 // Check if the role already exists in the database
                 var existingRole = DatabaseItemChecker.RoleFinder(user, _DbContext);
 
+
+                //Store a password hash:
+                PasswordHash hash = new PasswordHash(user.Password);
+                byte[] hashBytes = hash.ToArray();
+                byte[] saltBytes = hash.Salt;
+
                 var efUser = new EFUser
                 {
                     UserName = user.UserName,
-                    Password = user.Password,
-                    Salt = user.Salt,
+                    Password = hashBytes,
                     //Role = new EFRole { RoleName = user.Role.RoleName }
-                    Role = existingRole
+                    Role = existingRole,
+                    Salt = saltBytes
                 };
 
                 _DbContext.Users.Add(efUser);
@@ -70,6 +77,7 @@ namespace PuppyAPI.Controllers
             }
         }
 
+
         // POST: Users/Edit
         [HttpPut]
         //[ValidateAntiForgeryToken] // prevent cross-site request forgery (CSRF) attacks.
@@ -80,13 +88,17 @@ namespace PuppyAPI.Controllers
                 // Check if the role already exists in the database
                 var existingRole = DatabaseItemChecker.RoleFinder(userToUpdate, _DbContext);
 
+
+                //Store a password hash:
+                PasswordHash hash = new PasswordHash(userToUpdate.Password);
+                byte[] hashBytes = hash.ToArray();
+
                 //create a user in the database
                 var efUser = new EFUser
                 {
                     UserGUID = (Guid)userToUpdate.Id, //Id is nullable but UserID isn't
                     UserName = userToUpdate.UserName,
-                    Salt = userToUpdate.Salt,
-                    Password = userToUpdate.Password,
+                    Password = hashBytes,
 
                     ///Role = new EFRole { RoleName = userToUpdate.Role.RoleName }
                     Role = existingRole

@@ -10,7 +10,8 @@ namespace PuppyAPI.Controllers
     {
         // GET: HandlerController
         [HttpGet]
-        public ActionResult Index()
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(Guid guid)
         {
             return Ok();
         }

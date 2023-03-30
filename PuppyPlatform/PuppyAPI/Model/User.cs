@@ -5,7 +5,7 @@
         public Guid? Id { get; set; } //allowed to initially be empty/null
         public string UserName { get; set; }
         public string Password { get; set; }
-        public string Salt { get; set; }
+       // public string Salt { get; set; }
 
         public Role Role { get; set; }
         
