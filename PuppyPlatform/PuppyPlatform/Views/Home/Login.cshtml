@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<h1>@ViewData["Title"]</h1>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<form id="login-form">
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp">
+    <div id="usernameHelp" class="form-text">Enter your username.</div>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="password" name="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+<script>
+  $(document).ready(function() {
+    $('#login-form').submit(function(event) {
+      // Prevent the form from submitting normally
+      event.preventDefault();
+
+      // Get the form data
+      var formData = {
+        'username': $('#username').val(),
+        'password': $('#password').val()
+      };
+
+      // Send an AJAX request to the server
+      $.ajax({
+        type: 'GET',
+        url: 'https://localhost:7117/Login',
+        data: formData,
+        success: function(data) {
+          // Handle the successful response
+          console.log('Login successful');
+          // Redirect to the next view
+          window.location.href = 'Dashboard';
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          // Handle the error response
+          console.log('Login failed: ' + textStatus + ', ' + errorThrown);
+        }
+      });
+    });
+  });
+</script>

@@ -15,8 +15,16 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Femke/Desktop/Repos/School/IT_Master/MarsPuppies/PuppyPlatform/PuppyPlatform/Views/Home/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Femke/Desktop/Repos/School/IT_Master/MarsPuppies/PuppyPlatform/PuppyPlatform/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Femke/Desktop/Repos/School/IT_Master/MarsPuppies/PuppyPlatform/PuppyPlatform/Views/Home/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Femke/Desktop/Repos/School/IT_Master/MarsPuppies/PuppyPlatform/PuppyPlatform/Views/Home/Privacy.cshtml]
