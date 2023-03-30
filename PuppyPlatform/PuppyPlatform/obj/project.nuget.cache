@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sVpE+uMo5MqthwciRwKRaX5bNcOzbkhoQxdBzHva2+HrY7SA4YR5I+hszfXkEqcTusZZtzUmJ9a0OHtLXD+XzQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Femke\\Desktop\\Repos\\School\\IT_Master\\MarsPuppies\\PuppyPlatform\\PuppyPlatform\\PuppyPlatform.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Femke\\.nuget\\packages\\bootstrap\\5.2.3\\bootstrap.5.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
