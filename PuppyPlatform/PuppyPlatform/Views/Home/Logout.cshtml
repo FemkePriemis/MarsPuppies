@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<h1>@ViewData["Title"]</h1>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<body>
+    <h1>Random Dog Photo</h1>
+    <img id="dog-photo" src="" alt="Dog photo">
+    <button onclick="getRandomDogPhoto()">Get Random Dog Photo</button>
+    
+    <script>
+      function getRandomDogPhoto() {
+        const API_KEY = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ";
+        const CSE_ID = "512209ef6eb744047";
+        const rand = Math.floor(Math.random() * 100); // Generate random number
+        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&searchType=image&q=working+dog&num=1&start=${rand}`;
+
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const image_url = data.items[0].link;
+            document.getElementById("dog-photo").src = image_url;
+          })
+          .catch(error => console.error(error));
+      }
+    </script>
+  </body>

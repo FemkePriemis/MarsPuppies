@@ -13,16 +13,16 @@ namespace PuppyAPI.Database.EFmodels
         public int Weight { get; set; }
 
         public Guid HealthstatusGUID { get; set; }
-            [ForeignKey("HealthstatusGUID")]
-            public EFHealthStatus  HealthStatus { get; set; }
+        [ForeignKey("HealthstatusGUID")]
+        public EFHealthStatus  HealthStatus { get; set; }
 
         public Guid BiometricsGUID { get; set; }
-            [ForeignKey("BiometricsGUID")]
-            public EFBiometric Biometric { get; set; }
+        [ForeignKey("BiometricsGUID")]
+        public EFBiometric Biometric { get; set; }
 
         public Guid BehaviourGUID { get; set; }
-            [ForeignKey("BehaviourGUID")]
-            public EFBehaviour Behaviour { get; set; }
+        [ForeignKey("BehaviourGUID")]
+        public EFBehaviour Behaviour { get; set; }
 
     }
 
@@ -31,27 +31,20 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid HealthstatusGUID { get; set; }
 
-        public Guid HealthStateGUID { get; set; }
-            [ForeignKey("HealthstateGUID")]
-            public EFHealthstate Healthstate { get; set; }
+        public string Healthstate { get; set; }
 
         public DateTime LastUpdated { get; set; }
     }
 
-    public class EFHealthstate //'enum'
-    {
-        [Key]
-        public Guid HealthstateGUID { get; set; }
-        public string Healthstate { get; set; }
-    }
+ 
 
     public class EFInjury
     {
         [Key]
         public Guid InjuryGUID { get; set; }
-        public Guid DogID { get; set;}
-            [ForeignKey("DogGUID")]
-            public EFDog Dog { get; set; }
+        public Guid DogGUID { get; set;}
+        [ForeignKey("DogGUID")]
+        public EFDog Dog { get; set; }
         public string Injury { get; set; }
         public DateTime InjuryDate { get; set; }
 
@@ -62,8 +55,8 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid MedicationGUID { get; set; }
         public Guid DogGUID { get; set;}
-            [ForeignKey("DogGUID")]
-            public EFDog Dog { get; set; }
+        [ForeignKey("DogGUID")]
+        public EFDog Dog { get; set; }
         public string Medication { get; set; }
         public DateTime PerscriptionDate { get; set;}
     }
@@ -73,8 +66,8 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid IllnessGUID { get; set; }
         public Guid DogGUID { get; set; }
-            [ForeignKey("DogGUID")]
-            public EFDog Dog { get; set; }
+        [ForeignKey("DogGUID")]
+        public EFDog Dog { get; set; }
         public string Illness { get; set; }
         public DateTime IllnessDate { get; set; }
     }
@@ -92,8 +85,8 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid HeartrateGUID { get; set; }
         public Guid DogGUID { get; set;}
-            [ForeignKey("DogGUID")]
-            public EFDog Dog { get; set; }
+        [ForeignKey("DogGUID")]
+        public EFDog Dog { get; set; }
         public DateTime HeartrateDate { get; set;}
         public int Heartrate { get; set; }
     }
@@ -103,8 +96,8 @@ namespace PuppyAPI.Database.EFmodels
         [Key]
         public Guid TemperatureGUID { get; set; }
         public Guid DogGUID { get; set; }
-            [ForeignKey("DogGUID")]
-            public EFDog Dog { get; set; }
+        [ForeignKey("DogGUID")]
+        public EFDog Dog { get; set; }
         public DateTime TemperatureDate { get; set; }
         public double Temperature { get; set; }
     }

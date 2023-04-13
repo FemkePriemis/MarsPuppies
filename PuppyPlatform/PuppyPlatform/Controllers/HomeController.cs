@@ -17,17 +17,19 @@ namespace PuppyPlatform.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
         public IActionResult Login()
         {
             return View();
         }
 
         public IActionResult Dashboard()
+        {
+            var model = new ErrorViewModel();
+            model.RequestId = "TEST";
+            return View(model);
+        }
+
+        public IActionResult Logout()
         {
             return View();
         }

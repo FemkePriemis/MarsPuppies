@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PuppyAPI.Database;
 
@@ -11,9 +12,11 @@ using PuppyAPI.Database;
 namespace PuppyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230331124934_Healthstatus")]
+    partial class Healthstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +141,7 @@ namespace PuppyAPI.Migrations
 
                     b.HasIndex("DogGUID");
 
-                    b.ToTable("Grades");
+                    b.ToTable("ActivityGrade");
                 });
 
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHealthStatus", b =>

@@ -17,6 +17,26 @@
     <img src="../Views/Photos/CAMP_icon.png" />
 </div>-->
 
+<style>
+    .rect-img-container {
+  position: relative;
+}
+
+.rect-img-container::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.rect-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+</style>
+
 <!doctype html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
 
@@ -28,11 +48,120 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
   </head>
   <body>
-    <h1>Hello, enjfejnefd!</h1>
+    <h1>Hello!</h1>
+    <h2>Some of the dogs working on mars right now:</h2>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
- 
-    <img src="https://i.pinimg.com/564x/f4/24/7d/f4247d0b93bc2e46765e5828d0d9f141.jpg" class="img-thumbnail" alt="...">
 
+    <!--<img src="https://i.pinimg.com/564x/f4/24/7d/f4247d0b93bc2e46765e5828d0d9f141.jpg" class="img-thumbnail" alt="...">-->
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row" id="dog-cards">
+          
+
+            </div> <!-- end of row -->
+        </div>
+
+    </div>
+
+<!-- Get random dog image-->
+<script>
+    const dogCardsContainer = document.getElementById("dog-cards");
+
+    const API_KEY = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ";
+    const CSE_ID = "512209ef6eb744047";
+         
+    const dogs = [];
+    fetch('https://localhost:7117/Dog')
+    .then(response => response.json())
+    .then(data => {
+    dogs.push(...data);
+    console.log(dogs); // the list of dogs retrieved from the API endpoint
+
+    dogs.forEach(dog => {
+          
+        console.log("Creating...");
+          
+        const rand = Math.floor(Math.random() * 100); // Generate random number
+        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&searchType=image&q=working+dog&num=1&start=${rand}&imgSize=large`;
+
+            console.log(dog);
+
+        var ph_image_url = "https://sugarplumnannies.com/wp-content/uploads/2015/11/dog-placeholder.jpg";
+
+        var description = "tbd";
+
+        image_url = ph_image_url;
+
+            if (dog == "Yuka")
+            {
+                description = "The captain. He stands tall among others, despite his athletic frame. There's something fascinating about him, perhaps it's his tenderness or perhaps it's simply his odd friends. But nonetheless, the others tend to follow him, while trying to subtly look more like him.";
+                image_url = "Photos/Yuka.jpg"
+            }
+
+            if (dog == "Aico")
+            {
+                description = "Very caring and takes care of the station's rations. Nearly impossible to wake up. He could sleep through a hurricane.";
+                image_url = "Photos/Aico.jpg"
+            }
+
+            if (dog == "Jara")
+            {
+                description = "Has decided that all commonly retrieved food is poison to her body. This has her on edge with Aico.";
+                image_url = "Photos/Jara.jpg"
+            }
+            
+
+            var imageID = dog;
+
+            const card = `
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+
+                <div class="rect-img-container">
+                  <img id="${imageID}" class=" rect-img card-img-top aspect-ratio-object-fit" src="${image_url}" alt="Dog photo">
+                </div>
+                
+                  
+                <div class="card-body">
+                    <p class="card-text">
+                    <h2>${dog}</h2>
+                    ${description}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                    </div>
+                </div>
+                </div>
+            </div>
+            `;
+            document.getElementById("dog-cards").innerHTML += card;
+
+            if (document.getElementById(imageID).src == ph_image_url)
+            {
+                fetch(url)
+            .then(response => response.json())
+                .then(data => {
+
+                    image_url = data.items[0].link;
+                    console.log(image_url);
+                    document.getElementById(imageID).src = image_url;
+            })
+        .catch(error => {
+            console.error("Error fetching dog image:", error);
+            image_url = ph_image_url;
+        });
+            }
+            
+    });
+    })
+    .catch(error => console.error(error));
+</script>
 
 </body>
 </html>
