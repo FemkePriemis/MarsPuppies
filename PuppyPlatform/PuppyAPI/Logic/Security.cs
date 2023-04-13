@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using PuppyAPI.Database;
 using PuppyAPI.Database.EFmodels;
 
 using System.IdentityModel.Tokens.Jwt;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace PuppyAPI.Logic
 {
+
     public sealed class PasswordHash
     {
         const int SaltSize = 16, HashSize = 20, HashIter = 10000;
@@ -55,7 +57,6 @@ namespace PuppyAPI.Logic
 
     public class TokenHandling
     {
-
         public string GenerateToken(EFUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -67,7 +68,7 @@ namespace PuppyAPI.Logic
                             new Claim(ClaimTypes.Name, user.UserName),
                             new Claim(ClaimTypes.Role, user.RoleGUID.ToString())
                     }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -83,27 +84,25 @@ namespace PuppyAPI.Logic
             var mySecret = "I like cookies especially chocolate";
             var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
 
-            var myIssuer = "http://mysite.com";
-            var myAudience = "http://myaudience.com";
-
             var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken validatedToken;
+
             try
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = myIssuer,
-                    ValidAudience = myAudience,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
                     IssuerSigningKey = mySecurityKey
-                }, out SecurityToken validatedToken);
+                }, out validatedToken);
             }
-            catch
+            catch (Exception)
             {
                 return false;
             }
-            return true;
+
+            return validatedToken != null;
         }
 
         public string GetClaim(string token, string claimType)
@@ -113,6 +112,26 @@ namespace PuppyAPI.Logic
 
             var stringClaimValue = securityToken.Claims.First(claim => claim.Type == claimType).Value;
             return stringClaimValue;
+        }
+
+        public string GenerateRefrToken(EFUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("I like cookies especially chocolate");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                            new Claim(ClaimTypes.Name, user.UserName),
+                            new Claim(ClaimTypes.Role, user.RoleGUID.ToString())
+                    }),
+                Expires = DateTime.UtcNow.AddDays(15), //OTHER THEN ACCESS TOKEN
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            return tokenString;
         }
     }
 }

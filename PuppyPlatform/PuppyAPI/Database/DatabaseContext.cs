@@ -7,6 +7,7 @@ namespace PuppyAPI.Database
     {
         public DbSet<EFUser> Users { get; set;}
             public DbSet<EFRole> Roles { get; set;}
+            public DbSet<EFRefreshToken> RefreshTokens { get; set; }
 
         public DbSet<EFDog> Dog { get; set; }
             public DbSet<EFHealthStatus> HealthStatus { get; set;}
