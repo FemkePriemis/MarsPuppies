@@ -11,7 +11,7 @@
 ||Static code review|sonarcloud-scans|:curly_loop: <br /> Above certain score|
 |CD| Dockerize | ef|:heavy_check_mark:|
 || Push to Docker| deef|:heavy_check_mark:|
-||Push to ACR| Azure Container Registry|:heavy_check_mark:|
+||Push to ACR| Azure Container Registry|:x:|
 
 
 ### Microservice
