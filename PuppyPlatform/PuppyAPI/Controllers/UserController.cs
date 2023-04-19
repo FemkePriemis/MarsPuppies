@@ -23,7 +23,7 @@ namespace PuppyAPI.Controllers
 
         // GET: Users
         [HttpGet]
-        public ActionResult Index(int ID)
+        public ActionResult Index(Guid ID)
         {
             var user = _DbContext.Users.Find(ID);
             return Ok(user);
@@ -117,7 +117,7 @@ namespace PuppyAPI.Controllers
 
         [HttpDelete]
         //[ValidateAntiForgeryToken] // prevent cross-site request forgery (CSRF) attacks.
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
             try
             {

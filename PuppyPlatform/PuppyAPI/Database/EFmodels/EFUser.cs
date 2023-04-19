@@ -35,4 +35,17 @@ namespace PuppyAPI.Database.EFmodels
             [ForeignKey("DogGUID")]
             public EFDog Dog { get; set; }
     }
+
+    public class EFRefreshToken
+    {
+        [Key]
+        public Guid AccessGUID { get; set; }
+
+        public Guid UserGUID { get; set; }
+        [ForeignKey("UserGUID")]
+        public EFUser User { get; set; }
+
+        public string Token { get; set; }
+
+    }
 }

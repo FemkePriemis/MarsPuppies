@@ -5,6 +5,7 @@
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <form id="login-form">
   <div class="mb-3">
     <label for="username" class="form-label">Username</label>
@@ -40,8 +41,12 @@
         success: function(data) {
           // Handle the successful response
           console.log('Login successful');
+
+          //save in cookies
+          document.cookie = "accessToken="+ data.accessToken +"; path=/; secure; SameSite=None;";
+
           // Redirect to the next view
-          window.location.href = 'Dashboard';
+          window.location.href = 'https://localhost:7014/';
         },
         error: function(jqXHR, textStatus, errorThrown) {
           // Handle the error response

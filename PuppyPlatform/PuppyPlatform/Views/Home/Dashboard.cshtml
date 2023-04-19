@@ -1,36 +1,514 @@
-﻿<!--
+﻿@model ErrorViewModel;
+
 @{
     ViewData["Title"] = "Dashboard";
 }
 
 
-<style>
-    body{
-        background-color: #9D5D4B;
-    }
-</style>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
-    <img src="../Views/Photos/CAMP_icon.png" />
-</div>-->
-
 <!doctype html>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
 
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Button -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!--end button-->
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.27.3/dist/apexcharts.min.js"></script>
+  
+
   </head>
   <body>
     <h1>Dashboard</h1>
   
-    <p> Hello :) </p>
+    <p> Hello :) @Model.RequestId </p>
 
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addDataModal">
+    Add Fake Data
+</button>
+
+<!-- Modal popup for adding data -->
+<div class="modal fade" id="addDataModal" tabindex="-1" role="dialog" aria-labelledby="addDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDataModalLabel">Add New Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addDataForm">
+                    <div class="form-group">
+                        <label for="dogSelect">Dog:</label>
+                        <select class="form-control" id="dogSelect" name="dogSelect">
+                            <!--  each dog added using script -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="numEntriesInput">Number of Entries:</label>
+                        <input type="number" class="form-control" id="numEntriesInput" name="numEntriesInput" min="1" max="10" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="startDateInput">Start Date:</label>
+                        <input type="datetime-local" class="form-control" id="startDateInput" name="startDateInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDateInput">End Date:</label>
+                        <input type="datetime-local" class="form-control" id="endDateInput" name="endDateInput">
+                    </div>
+                    <div class="form-group">
+                        <label for="dataTypeRadio">Data Type:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="dataTypeRadio" id="tempRadio" value="temp" checked>
+                            <label class="form-check-label" for="tempRadio">Temperature</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="dataTypeRadio" id="hrRadio" value="hr">
+                            <label class="form-check-label" for="hrRadio">Heart Rate</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="generateData()">Generate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="form-group2">
+        <label for="dogSelect">Selected dog for data display:</label>
+        <select class="form-control" id="dogSelect2" name="dogSelect" onchange="getDataforDisplay(this.value)">
+            <!--  each dog added using script -->
+        </select>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xxl-8">
+                <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+            </div>
+
+            <div class="col-xxl-4 d-flex justify-content-center align-items-center">
+                <div id="apexcharts-polar-area"></div>
+            </div>
+        </div>
+    
+    </div>
+  
+
+    <!-- Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.min.js"></script>
+    <script>
+      function generateChart(data, options, dataLabels) {
+        return new Chart(document.getElementById("myChart"), {
+            type: 'line',
+            data: {
+              labels: options.labels,
+              datasets: data.map((d, i) => ({
+                data: d,
+                label: dataLabels[i], // Use dataLabels as the label for each dataset
+                lineTension: 0,
+                backgroundColor: 'transparent',
+                borderColor: options.borderColor[i],
+                borderWidth: 4,
+                pointBackgroundColor: options.borderColor[i]
+              }))
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: false
+                  }
+                }]
+              },
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  fontColor: '#333',
+                  usePointStyle: true
+                }
+              }
+            }
+          });
+    
+  }
+    </script>
+
+    <script>
+
+        function MakePolar(seriesUsed, labelsUsed)
+        {
+
+            var options = {
+              
+              series: seriesUsed,
+              chart: {
+                height: 500,
+                type: 'polarArea',
+              },
+              labels: labelsUsed,
+              stroke: {
+                colors: ['#fff']
+              },
+              fill: {
+                opacity: 0.8
+              },
+              title: {
+                text: 'The different health statuses of all dogs',
+                align: 'center',
+                margin: 10,
+                style: {
+                    fontWeight: 'bold',
+                    color: '#333'
+                }
+              },
+              yaxis: {
+                labels: {
+                  formatter: function(val) {
+                    return val.toFixed(0); // limit to 0 decimal places
+                  }
+                },
+                tickAmount: Math.max(...seriesUsed)
+              },
+              responsive: [{
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    width: 200
+                  },
+                  legend: {
+                    position: 'bottom'
+                
+                  }
+                }
+              }]
+            };
+
+            var chart = new ApexCharts(document.querySelector("#apexcharts-polar-area"), options);
+            chart.render();
+
+        }
+
+        async function fetchAndCountDogs() {
+          try {
+            const healthstatusses = await fetch('https://localhost:7117/Dog/HealthstateOptions').then(response => response.json());
+            console.log(healthstatusses);
+
+            const dogs = await fetch('https://localhost:7117/Dog').then(response => response.json());
+
+            const healthStatusCount = {};
+
+            for (const dog of dogs) {
+              try {
+                const response = await fetch(`https://localhost:7117/Dog/GetID?name=${dog}`);
+                if (!response.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                const dogID = (await response.text()).replace(/^"(.*)"$/, '$1');
+                const healthResponse = await fetch(`https://localhost:7117/Dog/${dogID}/health`);
+
+
+                if (!healthResponse.ok) {
+                  throw new Error("Network response was not ok");
+                }
+                const dogHealth = await healthResponse.text();
+
+                if (!healthStatusCount[dogHealth]) {
+                    healthStatusCount[dogHealth] = 1; // If this status hasn't been counted yet, set count to 1
+                  } else {
+                    healthStatusCount[dogHealth]++; // Otherwise, increment the count
+                  }
+        
+              } catch (error) {
+                console.error(error);
+              }
+            } //end for dog in dogs
+
+            const seriescounts = [];
+            for (const status of healthstatusses) {
+              if (healthStatusCount[status]) {
+                seriescounts.push(healthStatusCount[status]);
+              } else {
+                seriescounts.push(0);
+              }
+            }
+
+            console.log(seriescounts);
+
+            MakePolar(seriescounts, healthstatusses);
+
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        fetchAndCountDogs();
+
+        
+</script>
+
+    <script> //for the form to generate data
+
+        window.onload = function() {
+            getDogs();
+        }
+
+        function getDogs(){
+            var isEmpty = (document.getElementById('dogSelect').options.length == 0);
+            console.log(isEmpty);
+            if (!isEmpty)
+            {
+                return;
+            }
+
+            const dogs = [];
+            fetch('https://localhost:7117/Dog')
+            .then(response => response.json())
+            .then(data => {
+            dogs.push(...data);
+            console.log(dogs); // the list of dogs retrieved from the API endpoint
+
+            const selectbox = document.getElementById("dogSelect");
+            const selectbox2 = document.getElementById("dogSelect2");
+
+             dogs.forEach(dog => {
+                 const item = `
+                 <option value=${dog}> ${dog} </option>
+                `;
+                 selectbox.innerHTML += item;
+                 selectbox2.innerHTML += item;
+             });
+
+             }) // added the closing curly brace here
+            .catch(error => console.error(error));
+         }
+
+         function generateData()
+         {
+              const dog = document.getElementById("dogSelect").value;
+              const dataType = document.querySelector('input[name="dataTypeRadio"]:checked').value;//temp or heartrate
+              const numEntries = document.getElementById("numEntriesInput").value;
+              const startTime = document.getElementById("startDateInput").value;
+              const endTime = document.getElementById("endDateInput").value;
+
+              dataFaking(dog, dataType, numEntries, startTime, endTime);
+             
+         }
+
+         function dataFaking(dog, dataType, numEntries, startTime, endTime)
+         {
+             fetch(`https://localhost:7117/Dog/GetID?name=${dog}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.text();
+            })
+            .then(data => {
+                // Do something with the dog ID
+                console.log(data);
+
+                const dogID = data.replace(/^"(.*)"$/, '$1');
+                var datatypeAPIkey = "unknown";
+
+                var generatedData =  [];
+              
+                if (dataType=="hr")
+                {
+                    generatedData = generateHR(numEntries);
+                    datatypeAPIkey = "heartrates";
+                }
+                else
+                {
+                    generatedData = generateTemp(numEntries);
+                    datatypeAPIkey = "temperatures";
+                }
+
+
+                const generatedTS =  generateTimestamps(numEntries, startTime, endTime);
+
+                //Send it to the API
+
+                const url = `https://localhost:7117/Dog/${dogID}/biometrics/${datatypeAPIkey}`;
+                
+
+                generatedData.forEach((hr, index) => {
+                  const formattedDate = generatedTS[index];
+                  console.log(formattedDate);
+
+                  if (datatypeAPIkey == "temperatures")
+                  {
+                      var usedurl = url + `?temp=${hr}&possTime=${formattedDate}`;
+                  }
+                  else{
+                      var usedurl = url + `?heartrate=${hr}&possTime=${formattedDate}`;
+                  }
+                  
+
+                  console.log("Generated URL:", usedurl);
+  
+                    const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({})
+                    };
+
+                  fetch(usedurl, options)
+                    .catch(error => {
+                      console.error(error);
+                    });
+                });
+
+
+
+
+            })
+            .catch(error => {
+              console.error("Error retrieving dog ID:", error);
+            });
+         }
+
+
+         function generateHR(numEntries)
+         {
+              const minHR = 60;
+              const maxHr = 100;
+              const hrs = [];
+
+              for (let i = 0; i < numEntries; i++) {
+                const temp = Math.round(Math.random() * (maxHr - minHR) + minHR);
+                hrs.push(temp);
+              }
+
+              return hrs;
+         }
+
+
+         function generateTemp(numEntries)
+         {
+              const minTemp = 35;
+              const maxTemp = 40;
+              const temperatures = [];
+
+              for (let i = 0; i < numEntries; i++) {
+                const temp = (Math.random() * (maxTemp - minTemp) + minTemp).toFixed(1);
+                temperatures.push(temp);
+              }
+
+              return temperatures;
+         }
+
+         function generateTimestamps(numEntries, startDT, endDT)
+         {
+              const timestamps = [];
+              const startTime = new Date(startDT).getTime();
+              const endTime = new Date(endDT).getTime();
+              const timeDiff = endTime - startTime;
+              const increment = timeDiff / numEntries;
+
+              for (let i = 0; i < numEntries; i++) {
+                const timestamp = new Date(startTime + (increment * i)).toISOString();
+                timestamps.push(timestamp);
+              }
+
+              return timestamps;
+         }
+
+         function getDataforDisplay(dogName)
+         {
+             fetch(`https://localhost:7117/Dog/GetID?name=${dogName}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.text();
+            })
+            .then(data => {
+                // Do something with the dog ID
+                console.log(data);
+
+                const dogID = data.replace(/^"(.*)"$/, '$1');
+
+
+                var Temps = [];
+                var HRs =[];
+
+                const urlHR = `https://localhost:7117/Dog/${dogID}/biometrics/heartrates`;
+                const urlT = `https://localhost:7117/Dog/${dogID}/biometrics/temperatures`;
+
+                // Fetch heart rates and temperatures in parallel using Promise.all()
+                Promise.all([fetch(urlHR), fetch(urlT)])
+                    .then(([responseHR, responseT]) => {
+                        if (!responseHR.ok) {
+                            throw new Error("Network response for heart rates was not ok");
+                        }
+                        if (!responseT.ok) {
+                            throw new Error("Network response for temperatures was not ok");
+                        }
+                        return Promise.all([responseHR.json(), responseT.json()]);
+                    })
+                    .then(([dataHR, dataT]) => {
+                        // Do something with the heart rate and temperature data
+                        
+                        console.log(dataHR);
+                        console.log(dataT);
+
+                        const HRs = dataHR.map(a => a.heartrate);
+                        const HRts = addZToDates(dataHR.map(a => a.heartrateDate));
+                        const Temps = dataT.map(a => a.temperature);
+                        const Tempts = addZToDates(dataT.map(a => a.temperatureDate));
+
+                        console.log(HRts);
+
+                        // find the longest array
+                        let maxLength = Math.max(HRts.length, Tempts.length);
+                        let timestamps = HRts.length === maxLength ? HRts : Tempts;
+
+
+                        const hrChart = generateChart([HRs,Temps], {
+                            labels: timestamps.map(dateString => new Date(dateString).toLocaleDateString()),
+                            borderColor: ['#963B1E', '#1E5796']
+                         },["Heartrate", "Temperature"]);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+                
+
+            });//end of fetch
+         }
+
+         function addZToDates(dates) {
+          return dates.map(dateString => {
+            if (dateString.endsWith('Z')) {
+              // If the date string already ends with 'Z', return it as is
+              return dateString;
+            } else {
+              // Otherwise, append 'Z' to the end of the date string
+              return dateString + 'Z';
+            }
+          });
+}
+    </script>
 </body>
 </html>

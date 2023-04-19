@@ -11,6 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Photos\Aico.jpg" />
+    <None Include="wwwroot\Photos\Jara.jpg" />
+    <None Include="wwwroot\Photos\Yuka.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.2.3" />
   </ItemGroup>
 

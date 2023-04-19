@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PuppyAPI.Controllers
 {
@@ -8,6 +9,7 @@ namespace PuppyAPI.Controllers
     public class LogoutController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public IActionResult Index()
         {
             return Ok();
