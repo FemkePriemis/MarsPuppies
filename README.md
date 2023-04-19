@@ -1,7 +1,7 @@
 # MarsPuppies
 
 ## Workflow
-
+There are different workflows for the monolithic (first) application and the microservice implementation of the platform:
 ### Monolith
 
 | Overarching |Step     |Explanation     |Is forced to pass     |
