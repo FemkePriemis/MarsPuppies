@@ -6,11 +6,12 @@ namespace PuppyAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class VetsController : ControllerBase
+    public class HandlerController : ControllerBase
     {
         // GET: HandlerController
         [HttpGet]
-        public ActionResult Index()
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(Guid guid)
         {
             return Ok();
         }
@@ -18,7 +19,6 @@ namespace PuppyAPI.Controllers
         // POST: HandlersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Add")] //or create
         public ActionResult Create(IFormCollection collection)
         {
             try
@@ -41,7 +41,6 @@ namespace PuppyAPI.Controllers
         // POST: HandlerController/Edit/5
         [HttpPut]
         [ValidateAntiForgeryToken]
-        [Route("{id}/Update")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -50,14 +49,13 @@ namespace PuppyAPI.Controllers
             }
             catch
             {
-                return Ok();
+                return Ok(); 
             }
         }
 
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
-        [Route("Remove")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
@@ -70,5 +68,6 @@ namespace PuppyAPI.Controllers
             }
         }
 
+        
     }
 }

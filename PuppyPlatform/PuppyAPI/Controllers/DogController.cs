@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PuppyAPI.Model;
+using System.Net;
 
 namespace PuppyAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DogsController : ControllerBase
+    public class DogController : ControllerBase
     {
         [HttpGet]
         public string Index()
@@ -13,14 +14,12 @@ namespace PuppyAPI.Controllers
             return "test";
         }
         [HttpPost]
-        [Route("Add")]
         public string Add(Dog s)
         {
             return s.Name + s.Name;
         }
 
         [HttpDelete]
-        [Route("Remove")]
         public string Add2(Dog s)
         {
             return s.Name + s.Name;
@@ -34,95 +33,111 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPut]
-        [Route("{id}/Update")]
+        [Route("{id}")]
         public bool Delete(char x)
         {
             return true;
         }
 
         [HttpGet]
-        [Route("{id}/Health")]
+        [Route("{id}/health")]
         public IActionResult test()
         {
             return Ok();
         }
 
+        [HttpGet]
+        [Route("healthstates")]
+        //[ProducesResponseType(typeof(IEnumerable<Healthstatus.Healthstate>), (int)HttpStatusCode.OK)]
+        public IActionResult GetHealthStates()
+        {
+            /* return Ok(new[]
+             {
+                 Healthstatus.Healthstate.Healthy, //probably only want the description string to be send
+                 Healthstatus.Healthstate.Medicated,
+                 Healthstatus.Healthstate.Injured,
+                 Healthstatus.Healthstate.Pregnant,
+         });*/
+            return Ok();
+        }
+
         [HttpPost]
-        [Route("{id}/Health/Injuries")]
+        [Route("{id}/health/injuries")]
         public IActionResult injuries()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Health/Illnesses")]
+        [Route("{id}/health/illnesses")]
         public IActionResult illnesses()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Health/Medications")]
+        [Route("{id}/health/medications")]
         public IActionResult medications()
         {
             return Ok();
         }
 
         [HttpGet]
-        [Route("{id}/Behaviour")]
+        [Route("{id}/behaviour")]
         public IActionResult test2()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Behaviour/Sleeppattern")]
+        [Route("{id}/behaviour/sleepPattern")]
         public IActionResult sleeppattern()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Behaviour/UnusualBehaviour")]
+        [Route("{id}/behaviour/unusualBehaviour")]
         public IActionResult unusBehaviour()
         {
             return Ok();
         }
 
         [HttpGet]
-        [Route("{id}/Biometrics")]
+        [Route("{id}/biometrics")]
         public IActionResult test3()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Biometrics/Heartrates")]
+        [Route("{id}/biometrics/heartrates")]
         public IActionResult hr2()
         {
             return Ok();
         }
 
         [HttpPost]
-        [Route("{id}/Biometrics/Temperatures")]
+        [Route("{id}/biometrics/temperatures")]
         public IActionResult temp2()
         {
             return Ok();
         }
 
-        [HttpPost]
-        [Route("{id}/Biometrics/HeartrateThreshold")]
+        [HttpPut]
+        [Route("{id}/biometrics/heartrateThreshold")]
         public IActionResult hr3()
         {
             return Ok();
         }
 
-        [HttpPost]
-        [Route("{id}/Biometrics/TemperatureThreshold")]
+        [HttpPut]
+        [Route("{id}/biometrics/temperatureThreshold")]
         public IActionResult temp3()
         {
             return Ok();
         }
+
 
 
     }
