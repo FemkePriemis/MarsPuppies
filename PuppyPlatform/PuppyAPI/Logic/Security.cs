@@ -57,6 +57,7 @@ namespace PuppyAPI.Logic
 
     public class TokenHandling
     {
+
         public string GenerateToken(EFUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

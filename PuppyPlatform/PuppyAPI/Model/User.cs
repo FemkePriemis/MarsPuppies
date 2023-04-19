@@ -16,4 +16,9 @@
         public string RoleName { get; set; }
         public List<Guid>? DogIDs { get; set; } //? means can be null, the IDs of the dogs they can access
     }
+
+    public class JwtAuthenticationConfig
+    {
+        public string SecretKey { get; set; }
+    }
 }

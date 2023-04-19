@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PuppyAPI.Database;
 using PuppyAPI.Database.EFmodels;
@@ -23,6 +24,7 @@ namespace PuppyAPI.Controllers
 
 
         [HttpGet]
+        //[Authorize]
         public ActionResult Index() //returns all dog names
         {
             List<string> dogNames = _DbContext.Dog.Select(x => x.Name).ToList();

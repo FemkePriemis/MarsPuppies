@@ -73,6 +73,8 @@
     const CSE_ID = "512209ef6eb744047";
          
     const dogs = [];
+    const bearerToken = document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    
     fetch('https://localhost:7117/Dog')
     .then(response => response.json())
     .then(data => {
@@ -149,16 +151,12 @@
             .then(response => response.json())
                 .then(data => {
 
-                    if (!data)
-                    {
-                        image_url = data.items[0].link;
-                        console.log(image_url);
-                        document.getElementById(imageID).src = image_url;
-                    }
-
-                    else{
-                       console.error("Could not retrieve image: ", data);
-                    }
+                    
+                    image_url = data.items[0].link;
+                    console.log("Found one");
+                    console.log(image_url);
+                    document.getElementById(imageID).src = image_url;
+                    
                     
             })
         .catch(error => {

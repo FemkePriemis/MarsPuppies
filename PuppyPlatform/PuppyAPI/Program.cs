@@ -1,5 +1,9 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PuppyAPI.Database;
+using PuppyAPI.Model;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,25 @@ builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum v
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PuppyAPIContext")));
+
+builder.Services.Configure<JwtAuthenticationConfig>(builder.Configuration.GetSection("JwtAuthentication"));
+
+//  Add authentication 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey =  new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JwtAuthentication:SecretKey"]))
+    };
+});
 
 var app = builder.Build();
 
@@ -37,6 +60,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
+
 
 app.MapControllers();
 
