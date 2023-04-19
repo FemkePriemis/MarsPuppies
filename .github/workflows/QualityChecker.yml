@@ -95,5 +95,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_PuppyAPI" /o:"femkepriemis" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          msbuild PuppyPlatform/PuppyPlatform.sln /t:PuppyAPI
+          msbuild PuppyPlatform/PuppyPlatform.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
