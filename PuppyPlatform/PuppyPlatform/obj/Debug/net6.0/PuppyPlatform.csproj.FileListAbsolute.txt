@@ -50,3 +50,5 @@ C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPla
 C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform\obj\Debug\net6.0\ref\PuppyPlatform.dll
 C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform\obj\Debug\net6.0\PuppyPlatform.pdb
 C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform\obj\Debug\net6.0\PuppyPlatform.genruntimeconfig.cache
+C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Femke\Desktop\Repos\School\IT_Master\MarsPuppies\PuppyPlatform\PuppyPlatform\obj\Debug\net6.0\PuppyPlatform.csproj.CopyComplete

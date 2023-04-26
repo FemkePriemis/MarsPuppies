@@ -1,21 +1,10 @@
-﻿<!--
+﻿
 @{
     ViewData["Title"] = "Home Page";
 }
 
+@model PuppyPlatform.Models.DashboardModel
 
-<style>
-    body{
-        background-color: #9D5D4B;
-    }
-</style>
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
-    <img src="../Views/Photos/CAMP_icon.png" />
-</div>-->
 
 <style>
     .rect-img-container {
@@ -59,116 +48,42 @@
 
             <div class="row" id="dog-cards">
           
+            @if (Model == null)
+            {
+                    <p> No dogs found</p>
+            }
+            else
+            {
+                @foreach (var dog in Model.Dogs)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="rect-img-container">
+                            <img id="${imageID}" class="rect-img card-img-top aspect-ratio-object-fit" src= @dog.ImageUrl alt="Dog photo">
+                            </div>
+                            <div class="card-body">
+                            <p class="card-text">
+                                <h2>@dog.Name</h2>
+                                @dog.Description
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-muted">9 mins</small>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                }
+    
+                }
 
             </div> <!-- end of row -->
         </div>
 
     </div>
-
-<!-- Get random dog image-->
-<script>
-    const dogCardsContainer = document.getElementById("dog-cards");
-
-    const API_KEY = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ";
-    const CSE_ID = "512209ef6eb744047";
-         
-    const dogs = [];
-    const bearerToken = document.cookie.replace(/(?:(?:^|.*;\s*)accessToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    
-    fetch('https://localhost:7117/Dog')
-    .then(response => response.json())
-    .then(data => {
-    dogs.push(...data);
-    console.log(dogs); // the list of dogs retrieved from the API endpoint
-
-    dogs.forEach(dog => {
-          
-        console.log("Creating...");
-          
-        const rand = Math.floor(Math.random() * 100); // Generate random number
-        const url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&searchType=image&q=working+dog&num=1&start=${rand}&imgSize=large`;
-
-            console.log(dog);
-
-        var ph_image_url = "https://sugarplumnannies.com/wp-content/uploads/2015/11/dog-placeholder.jpg";
-
-        var description = "tbd";
-
-        image_url = ph_image_url;
-
-            if (dog == "Yuka")
-            {
-                description = "The captain. He stands tall among others, despite his athletic frame. There's something fascinating about him, perhaps it's his tenderness or perhaps it's simply his odd friends. But nonetheless, the others tend to follow him, while trying to subtly look more like him.";
-                image_url = "Photos/Yuka.jpg"
-            }
-
-            if (dog == "Aico")
-            {
-                description = "Very caring and takes care of the station's rations. Nearly impossible to wake up. He could sleep through a hurricane.";
-                image_url = "Photos/Aico.jpg"
-            }
-
-            if (dog == "Jara")
-            {
-                description = "Has decided that all commonly retrieved food is poison to her body. This has her on edge with Aico.";
-                image_url = "Photos/Jara.jpg"
-            }
-            
-
-            var imageID = dog;
-
-            const card = `
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-
-                <div class="rect-img-container">
-                  <img id="${imageID}" class=" rect-img card-img-top aspect-ratio-object-fit" src="${image_url}" alt="Dog photo">
-                </div>
-                
-                  
-                <div class="card-body">
-                    <p class="card-text">
-                    <h2>${dog}</h2>
-                    ${description}
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                    </div>
-                </div>
-                </div>
-            </div>
-            `;
-            document.getElementById("dog-cards").innerHTML += card;
-
-            if (document.getElementById(imageID).src == ph_image_url)
-            {
-                console.log("replacing image...");
-                fetch(url)
-            .then(response => response.json())
-                .then(data => {
-
-                    
-                    image_url = data.items[0].link;
-                    console.log("Found one");
-                    console.log(image_url);
-                    document.getElementById(imageID).src = image_url;
-                    
-                    
-            })
-        .catch(error => {
-            console.error("Error fetching dog image:", error);
-            image_url = ph_image_url;
-        });
-            }
-            
-    });
-    })
-    .catch(error => console.error(error));
-</script>
 
 </body>
 </html>

@@ -61,21 +61,24 @@ namespace PuppyAPI.Logic
         public string GenerateToken(EFUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("I like cookies especially chocolate");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                            new Claim(ClaimTypes.Name, user.UserName),
-                            new Claim(ClaimTypes.Role, user.RoleGUID.ToString())
-                    }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("I like cookies especially chocolate"));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            return tokenString;
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Name,user.UserName),
+                new Claim(ClaimTypes.Role, user.RoleGUID.ToString().ToUpper()),
+            new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            };
+            var token = new JwtSecurityToken(
+                issuer: "CAMP.com",
+                audience: "CAMP.com",
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: credentials);
+
+            var encodetoken = new JwtSecurityTokenHandler().WriteToken(token);
+            return encodetoken;
         }
 
         /* referenced from https://dotnetcoretutorials.com/2020/01/15/creating-and-validating-jwt-tokens-in-asp-net-core/ */
@@ -105,6 +108,31 @@ namespace PuppyAPI.Logic
 
             return validatedToken != null;
         }
+
+        /*
+         var mySecret = "I like cookies especially chocolate";
+            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken validatedToken;
+
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = mySecurityKey
+                }, out validatedToken);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return validatedToken != null;
+         */
 
         public string GetClaim(string token, string claimType)
         {
