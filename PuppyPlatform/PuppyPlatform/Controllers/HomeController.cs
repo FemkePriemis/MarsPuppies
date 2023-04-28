@@ -40,7 +40,7 @@ namespace PuppyPlatform.Controllers
             }
 
             // Show the index page
-            var model = new DashboardController();
+            var model = new IndexController();
 
             return model.Index(accesstoken);
 
@@ -69,7 +69,10 @@ namespace PuppyPlatform.Controllers
                 return RedirectToAction("Login");
             }
 
-            return View();
+            var model = new DashboardModel();
+            model.accessToken = accesstoken;
+
+            return View(model);
             
         }
 

@@ -1,100 +1,94 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using static PuppyPlatform.Models.DashboardModel;
 
 namespace PuppyPlatform.Controllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult Index(string accesstoken)
+        public async Task<Dictionary<string, int>> GetDogHealthStatusCountsAsync(string accesstoken)
         {
             // Call the API endpoint to retrieve the list of dogs
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accesstoken); // add the access token to the Authorization header
-            
-            
-            var response = client.GetAsync("https://localhost:7117/Dog").Result;
+            var healthstatussesResponse = await client.GetAsync("https://localhost:7117/Dog/HealthstateOptions");
+            var healthstatusses = await healthstatussesResponse.Content.ReadFromJsonAsync<List<string>>();
 
-            if (!response.IsSuccessStatusCode)
+            var dogsResponse = await client.GetAsync("https://localhost:7117/Dog");
+            var dogs = await dogsResponse.Content.ReadFromJsonAsync<List<string>>();
+
+            var healthStatusCount = new Dictionary<string, int>();
+            foreach (var dog in dogs)
             {
-                return View();
+                var dogIDResponse = await client.GetAsync($"https://localhost:7117/Dog/GetID?name={dog}");
+                if (!dogIDResponse.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException("Network response was not ok");
+                }
+                var dogID = await dogIDResponse.Content.ReadAsStringAsync();
+                var healthResponse = await client.GetAsync($"https://localhost:7117/Dog/{dogID}/health");
+                if (!healthResponse.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException("Network response was not ok");
+                }
+                var dogHealth = await healthResponse.Content.ReadAsStringAsync();
+                if (!healthStatusCount.ContainsKey(dogHealth))
+                {
+                    healthStatusCount[dogHealth] = 1;
+                }
+                else
+                {
+                    healthStatusCount[dogHealth]++;
+                }
             }
 
-                var json = response.Content.ReadAsStringAsync().Result;
-            var dogs = JsonConvert.DeserializeObject<List<string>>(json);
+            Dictionary<string, int> seriesCounts = new Dictionary<string, int>();
 
-            // Create the dashboard model and populate it with the dog data
-            var model = new Models.DashboardModel();
-            model.Dogs = new List<Models.Dog>();
-
-
-                foreach (var dog in dogs)
+            foreach (var status in healthstatusses)
+            {
+                if (healthStatusCount.ContainsKey(status))
                 {
-                    // Retrieve the dog's description and image URL from the API endpoint
-                    // Alternatively, you can store the description and image URL in a database
-                    var description = "";
-                    var imageUrl = "";
-                    if (dog == "Yuka")
-                    {
-                        description = "The captain. He stands tall among others, despite his athletic frame. There's something fascinating about him, perhaps it's his tenderness or perhaps it's simply his odd friends. But nonetheless, the others tend to follow him, while trying to subtly look more like him.";
-                        imageUrl = "Photos/Yuka.jpg";
-                    }
-                    else if (dog == "Aico")
-                    {
-                        description = "Very caring and takes care of the station's rations. Nearly impossible to wake up. He could sleep through a hurricane.";
-                        imageUrl = "Photos/Aico.jpg";
-                    }
-                    else if (dog == "Jara")
-                    {
-                        description = "Has decided that all commonly retrieved food is poison to her body. This has her on edge with Aico.";
-                        imageUrl = "Photos/Jara.jpg";
-                    }
-
-                    else
-                    {
-                        //generate a random new url from google
-                        var newImageUrl = GetRandomDogImageUrl();
-
-                        if (newImageUrl != null)
-                        {
-                            imageUrl = newImageUrl;
-                        }
-
-                        description = "To be done";
-                    }
-
-                    // Create a new dog object and add it to the list of dogs
-                    var newDog = new Models.Dog
-                    {
-                        Name = dog,
-                        Description = description,
-                        ImageUrl = imageUrl
-                    };
-                    model.Dogs.Add(newDog);
+                    seriesCounts.Add(status, healthStatusCount[status]);
                 }
+                else
+                {
+                    seriesCounts.Add(status, 0);
+                }
+            }
 
-
-            // Pass the dashboard model to the view
-            return View(model);
-            
+            return seriesCounts;
         }
 
-        public string GetRandomDogImageUrl() //TODO make async
+        [HttpGet]
+        public async Task<ActionResult<Dictionary<string, int>>> FetchAndCountDogs(string accesstoken)
         {
-            const string apiKey = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ";
-            const string cseId = "512209ef6eb744047";
+            var model = new Models.DashboardModel();
+            model.HealthstatusSeries = new Dictionary<string, int>();
 
-            var rand = new Random().Next(100);
-            var url = $"https://www.googleapis.com/customsearch/v1?key={apiKey}&cx={cseId}&searchType=image&q=working+dog&num=1&start={rand}&imgSize=large";
+            var seriesCounts = await GetDogHealthStatusCountsAsync(accesstoken);
+            return Ok(seriesCounts);
+        }
 
-            using (var client = new HttpClient())
-            {
-                var response = client.GetStringAsync(url).Result;
-                var data = JsonConvert.DeserializeObject<dynamic>(response);
-                var imageUrl = data.items[0].link;
-                return imageUrl;
-            }
+
+
+        [HttpGet]
+        public IActionResult getDataforDisplay(string accesstoken)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public bool makeFakeData(string accesstoken, string dog, string dataType, int numEntries, DateTime startTime, DateTime endTime )
+        {
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<string>>> getDogNames(string accesstoken)
+        {
+            var dogNames  = new List<string>();
+            return dogNames;
         }
     }
 }
