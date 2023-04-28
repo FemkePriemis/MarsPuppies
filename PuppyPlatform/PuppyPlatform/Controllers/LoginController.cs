@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using static PuppyPlatform.Models.LoginView;
+using static PuppyPlatform.Models.LoginView.LoginModel;
 
 namespace PuppyPlatform.Controllers
 {
@@ -22,11 +23,11 @@ namespace PuppyPlatform.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
-                    var accessToken = JsonConvert.DeserializeObject<string>(data);
+                    var accessToken = JsonConvert.DeserializeObject<TokenResponse>(data);
 
 
                     // Store the access token in a cookie
-                    Response.Cookies.Append("accessToken", accessToken, new CookieOptions
+                    Response.Cookies.Append("accessToken", accessToken.AccessToken, new CookieOptions
                     {
                         Path = "/",
                         Secure = true,
@@ -40,8 +41,12 @@ namespace PuppyPlatform.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid username or password.");
-                    return View();
                 }
+
+                model.errorMessage = "Wrong login";
+                // Pass the dashboard model to the view
+                return View("~/Views/Home/Login.cshtml", model);
+
             }
         }
     }

@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-<form id="login-form" method="post">
+<form id="login-form" method="post" action="~/Login">
   <div class="mb-3">
     <label for="username" class="form-label">Username</label>
     <input type="text" id="username" name="Username" class="form-control" required>
@@ -19,43 +19,20 @@
      <input type="password" id="password" name="Password" class="form-control" required>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
-
-
-<!---
-<script>
-  $(document).ready(function() {
-    $('#login-form').submit(function(event) {
-      // Prevent the form from submitting normally
-      event.preventDefault();
-
-      // Get the form data
-      var formData = {
-        'username': $('#username').val(),
-        'password': $('#password').val()
-      };
-
-      // Send an AJAX request to the server
-      $.ajax({
-        type: 'GET',
-        url: 'https://localhost:7117/Login',
-        data: formData,
-        success: function(data) {
-          // Handle the successful response
-          console.log('Login successful');
-
-          //save in cookies
-          document.cookie = "accessToken="+ data.accessToken +"; path=/; secure; SameSite=None;";
-
-          // Redirect to the next view
-          window.location.href = 'https://localhost:7014/';
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          // Handle the error response
-          console.log('Login failed: ' + textStatus + ', ' + errorThrown);
+ 
+<div style="margin-top:2%">
+    @if (Model != null)
+    {
+        @if (Model.errorMessage == "Wrong login")
+        {
+            <div class="alert alert-danger" role="alert">
+              Wrong login used! Please verify your filled in password and username.
+            </div>    
         }
-      });
-    });
-  });
-</script>-->
+    }
+    
+</div>
+
+    
+</form>
