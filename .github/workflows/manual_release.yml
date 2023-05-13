@@ -34,9 +34,6 @@ jobs:
   create_release_branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Create Release Branch
         run: |
           git fetch
@@ -49,13 +46,11 @@ jobs:
     needs: create_release_branch
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Merge Release to Main
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
-          git config --global user.email f.priemis@student.fontys.nl
-          git config --global user.name "Femke"
-          git checkout release-${{ inputs.name }}
-          git checkout master
-          git merge release-${{ inputs.name }}
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
