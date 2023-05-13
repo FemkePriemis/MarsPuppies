@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+    
       - name: Create Release Branch
         run: |
           git fetch
@@ -51,10 +51,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Merge Release to Main
+        
+      - name: Create Pull Request
         run: |
+          git fetch
           git checkout main
-          git merge --no-ff release-${{ inputs.name }} -m "Merge release-${{ inputs.name }} into main"
-          git tag -a v${{ inputs.name }} -m "Version${{ inputs.name }}"
-          git push origin main --tags
+          git merge release-${{ inputs.name }}
