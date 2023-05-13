@@ -39,7 +39,8 @@ jobs:
 
       - name: Create Release Branch
         run: |
-          git checkout dev
+          git fetch
+          git checkout Dev
           git pull
           git checkout -b release-${{ inputs.name }}
           git push --set-upstream origin release-${{ inputs.name }}
