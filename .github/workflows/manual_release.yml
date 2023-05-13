@@ -43,7 +43,7 @@ jobs:
           git checkout Dev
           git pull
           git checkout -b release-${{ inputs.name }}
-          git push
+          git push  --set-upstream origin release-${{ inputs.name }}
 
   merge_release_to_main:
     needs: create_release_branch
