@@ -56,4 +56,4 @@ jobs:
         run: |
           git fetch
           git checkout main
-          git merge release-${{ inputs.name }}
+          git merge origin/release-${{ inputs.name }}
