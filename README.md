@@ -27,4 +27,6 @@ There are different workflows for the monolithic (first) application and the mic
 
 ACR is optional, as the containers is pulled from hub.docker.com, but its possible to switch it up when the situation demands it.
 
-
+## Getting Started
+To get started with MarsPuppies, follow these steps:
+*To do*
