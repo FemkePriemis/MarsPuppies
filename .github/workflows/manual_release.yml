@@ -44,16 +44,3 @@ jobs:
           git pull
           git checkout -b release-${{ inputs.name }}
           git push  --set-upstream origin release-${{ inputs.name }}
-
-  merge_release_to_main:
-    needs: create_release_branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Create Pull Request
-        run: |
-          git fetch
-          git checkout main
-          git merge origin/release-${{ inputs.name }}
