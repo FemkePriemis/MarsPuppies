@@ -55,7 +55,7 @@ jobs:
       - name: Merge Release to Main
         run: |
           git fetch
-          git checkout main
+          git checkout release-${{ inputs.name }}
           git merge --no-ff release-${{ inputs.name }} -m "Merge release-${{ inputs.name }} into main"
           git tag -a v${{ inputs.name }} -m "Version${{ inputs.name }}"
           git push origin main --tags
