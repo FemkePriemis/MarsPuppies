@@ -54,8 +54,8 @@ jobs:
 
       - name: Merge Release to Main
         run: |
-          git fetch
-          git checkout main
-          git pull
-          git pull origin release-${{ inputs.name }}
-          git push
+          git config --global user.email f.priemis@student.fontys.nl
+          git config --global user.name "Femke"
+          git checkout release-${{ inputs.name }}
+          git checkout master
+          git merge release-${{ inputs.name }}
