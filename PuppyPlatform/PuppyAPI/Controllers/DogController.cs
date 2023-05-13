@@ -5,7 +5,6 @@ using PuppyAPI.Database;
 using PuppyAPI.Database.EFmodels;
 using PuppyAPI.Logic;
 using PuppyAPI.Model;
-using System.Net;
 
 namespace PuppyAPI.Controllers
 {
@@ -24,7 +23,7 @@ namespace PuppyAPI.Controllers
 
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public ActionResult Index() //returns all dog names
         {
             List<string> dogNames = _DbContext.Dog.Select(x => x.Name).ToList();
@@ -33,6 +32,7 @@ namespace PuppyAPI.Controllers
 
         [HttpGet]
         [Route("GetID")]
+        [Authorize]
         public ActionResult GetDogID(string name)
         {
             try
@@ -58,6 +58,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize (Roles = "A2DF5F19-93EA-4763-7E62-08DB31E5A5D1")] //only handlers //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult Add(Dog dog)
         {
             try
@@ -106,6 +107,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize (Roles = "A2DF5F19-93EA-4763-7E62-08DB31E5A5D1")] //only handlers
         public ActionResult Delete(Guid id)
         {
 
@@ -127,6 +129,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "A2DF5F19-93EA-4763-7E62-08DB31E5A5D1")] //only handlers //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult UpdateDog(Dog dog)
         {
             try
@@ -180,6 +183,7 @@ namespace PuppyAPI.Controllers
         /*Health*/
         [HttpGet]
         [Route("HealthstateOptions")]
+        [Authorize]
         public ActionResult ReturnHealthoptions()
         {
             var options = _DbContext.HealthStatus.Select(x => x.Healthstate).ToList();
@@ -187,6 +191,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpGet("{id}/health")]
+        [Authorize]
         public ActionResult test(Guid id)
         {
 
@@ -213,6 +218,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost("{id}/health/injuries")]
+        [Authorize(Roles = "DD72C2BF-53B0-4894-7A80-08DB31F0E8C6")] //only vets //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult injuries(Guid id, string Injury, DateTime InjuryDate)
         {
             try
@@ -246,6 +252,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost("{id}/health/illnesses")]
+        [Authorize(Roles = "DD72C2BF-53B0-4894-7A80-08DB31F0E8C6")] //only vets //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult illnesses(Guid id, string Illness, DateTime IllnessDate)
         {
             try
@@ -279,6 +286,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost("{id}/health/medications")]
+        [Authorize(Roles = "DD72C2BF-53B0-4894-7A80-08DB31F0E8C6")] //only vets //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult medications(Guid id, string MEdication, DateTime AssignDate)
         {
             try
@@ -313,6 +321,7 @@ namespace PuppyAPI.Controllers
 
 
         [HttpGet("{id}/health/medications")]
+        [Authorize]
         public ActionResult gmedications(Guid id)
         {
             try
@@ -378,6 +387,7 @@ namespace PuppyAPI.Controllers
 
         /*Behaviour*/
         [HttpPost("{id}/behaviour/sleepGrade")]
+        [Authorize(Roles = "A2DF5F19-93EA-4763-7E62-08DB31E5A5D1")] //only handlers
         public ActionResult sleeppattern(Guid id, float grade)
         {
             string subject = "Sleep";
@@ -394,6 +404,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPut("{id}/behaviour/unusualBehaviour")]
+        [Authorize(Roles = "A2DF5F19-93EA-4763-7E62-08DB31E5A5D1")] //only handlers
         public ActionResult unusBehaviour(Guid id, string behaviour)
         {
             try
@@ -434,6 +445,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpGet("{id}/behaviour")]
+        [Authorize]
         public ActionResult test2(Guid id)
         {
             try
@@ -481,6 +493,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpGet("{id}/behaviour/sleepGrade")]
+        [Authorize]
         public ActionResult gsleeppattern(Guid id)
         {
             string subject = "Sleep";
@@ -498,6 +511,7 @@ namespace PuppyAPI.Controllers
         /*Biometrics*/
 
         [HttpGet("{id}/biometricThresholds")]
+        [Authorize]
         public ActionResult test3(Guid id)
         {
             try
@@ -527,6 +541,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost("{id}/biometrics/heartrates")]
+        [Authorize]
         public ActionResult hr2(Guid id, int heartrate, DateTime? possTime = null)
         {
             try
@@ -570,6 +585,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPost("{id}/biometrics/temperatures")]
+        [Authorize]
         public ActionResult temp2(Guid id, float temp, DateTime? possTime = null)
         {
             try
@@ -615,6 +631,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpGet("{id}/biometrics/heartrates")]
+        [Authorize]
         public ActionResult ghr2(Guid id)
         {
             try
@@ -638,6 +655,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpGet("{id}/biometrics/temperatures")]
+        [Authorize]
         public ActionResult gtemp2(Guid id)
         {
             try
@@ -661,6 +679,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPut("{id}/biometrics/heartrateThreshold")]
+        [Authorize(Roles = "DD72C2BF-53B0-4894-7A80-08DB31F0E8C6")] //only vets //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult hr3(Guid id, int heartrateTh)
         {
             try
@@ -688,6 +707,7 @@ namespace PuppyAPI.Controllers
         }
 
         [HttpPut("{id}/biometrics/temperatureThreshold")]
+        [Authorize(Roles = "DD72C2BF-53B0-4894-7A80-08DB31F0E8C6")] //only vets //TODO make this readable/more sustainable (e.g. get this from a list in a config or something)
         public ActionResult temp3(Guid id, float tempThr)
         {
             try
