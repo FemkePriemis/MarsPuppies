@@ -10,9 +10,9 @@ on:
     inputs:
       name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
+        description: 'Release version number'
         # Default value if no value is explicitly provided
-        default: 'World'
+        default: '1.0.0'
         # Input has to be provided for the workflow to run
         required: true
         # The data type of the input
@@ -29,7 +29,7 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ inputs.name }}"
+      run: echo "Hello V${{ inputs.name }}"
       
   create_release_branch:
     runs-on: ubuntu-latest
@@ -39,10 +39,11 @@ jobs:
 
       - name: Create Release Branch
         run: |
+          git fetch
           git checkout Dev
           git pull
-          git checkout -b release-1.0.0
-          git push --set-upstream origin release-1.0.0
+          git checkout -b release-${{ inputs.name }}
+          git push --set-upstream origin release-${{ inputs.name }}
 
   merge_release_to_main:
     needs: create_release_branch
@@ -54,6 +55,6 @@ jobs:
       - name: Merge Release to Main
         run: |
           git checkout main
-          git merge --no-ff release-1.0.0 -m "Merge release-1.0.0 into main"
-          git tag -a v1.0.0 -m "Version 1.0.0"
+          git merge --no-ff release-${{ inputs.name }} -m "Merge release-${{ inputs.name }} into main"
+          git tag -a v${{ inputs.name }} -m "Version${{ inputs.name }}"
           git push origin main --tags
