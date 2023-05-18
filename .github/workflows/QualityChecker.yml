@@ -126,7 +126,7 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_MarsPuppies" /o:"femkepriemis" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          msbuild PuppyPlatform/PuppyPlatform.sln
-          PuppyPlatform/PuppyPlatform.sln
+          dotnet build PuppyPlatform/PuppyPlatform.sln --no-incremental
           dotnet test --collect "Code Coverage"
+          PuppyPlatform/PuppyPlatform.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
