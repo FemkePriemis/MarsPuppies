@@ -37,6 +37,11 @@ namespace PuppyAPI.Controllers
         {
             try
             {
+                if (findBadWords(name))
+                {
+                    return BadRequest("Includes bad word(s)");
+                }
+
                 // Check if the dog already exists in the database
                 var existingDog = _DbContext.Dog.FirstOrDefault(r => r.Name == name);
 
@@ -55,6 +60,11 @@ namespace PuppyAPI.Controllers
             {
                 return BadRequest("Invalid data");
             }
+        }
+
+        private bool findBadWords(string name)
+        {
+            throw new NotImplementedException();
         }
 
         [HttpPost]

@@ -39,7 +39,6 @@ namespace PuppyAPI.Logic
             }
 
             return existingHS;
-
         }
 
         public static EFBehaviour BehaviourFinder(Dog dogToValidate, DatabaseContext _DbContext)
@@ -56,7 +55,6 @@ namespace PuppyAPI.Logic
             }
 
             return existingHS;
-
         }
     }
 }

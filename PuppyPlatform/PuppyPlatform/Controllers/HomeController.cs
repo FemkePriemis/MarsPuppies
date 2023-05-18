@@ -98,7 +98,7 @@ namespace PuppyPlatform.Controllers
         }
         public string GetRandomDogImageUrl() //TODO make async
         {
-            const string apiKey = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ";
+            const string apiKey = "AIzaSyDxgheVd9NBahpJLoTD0g2cn_-P03d1cHQ"; //don't want this, actually want this in a 'secret' place, e.g. app settings can be encrypted
             const string cseId = "512209ef6eb744047";
 
             var rand = new Random().Next(100);
