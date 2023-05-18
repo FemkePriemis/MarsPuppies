@@ -40,14 +40,22 @@ jobs:
     needs: build
     runs-on: windows-latest
     steps:
-      - name: Install .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: 6.x.x
-          
-      - name: Execute unit tests
-        run: dotnet test PuppyPlatform --no-restore --verbosity normal
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+          
+      
   sonarcloud:
      needs: unittest
      runs-on: windows-latest
