@@ -38,8 +38,13 @@ jobs:
 
   unittest:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.x.x
+          
       - name: Execute unit tests
         run: dotnet test PuppyPlatform --no-restore --verbosity normal
 
