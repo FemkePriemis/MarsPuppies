@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Execute unit tests
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test PuppyPlatform --no-restore --verbosity normal
 
   sonarcloud:
      needs: unittest
