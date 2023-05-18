@@ -127,6 +127,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_MarsPuppies" /o:"femkepriemis" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build PuppyPlatform/PuppyPlatform.sln --no-incremental
-          dotnet test --collect "Code Coverage"
+          dotnet test PuppyPlatform/PuppyPlatform.sln --collect "Code Coverage"
           PuppyPlatform/PuppyPlatform.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
