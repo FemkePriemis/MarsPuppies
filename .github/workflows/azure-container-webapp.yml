@@ -25,7 +25,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build API Image
-      run: docker build . --file PuppyAPI/Dockerfile --tag gaico1608/puppyapi:latest
+      run: docker build . --file PuppyPlatform/PuppyAPI/Dockerfile --tag gaico1608/puppyapi:latest
     - name: Push API Image
       run: docker push gaico1608/puppyapi:latest
   
