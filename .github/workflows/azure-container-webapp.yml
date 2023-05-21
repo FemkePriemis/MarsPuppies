@@ -37,7 +37,7 @@ jobs:
 #       run: docker push gaico1608/puppyapi:latest
   
   azure_deployment:
-      needs: push_to_docker_registry
+#       needs: push_to_docker_registry
       name: Push image to ACR
       runs-on: ubuntu-latest
       steps:
