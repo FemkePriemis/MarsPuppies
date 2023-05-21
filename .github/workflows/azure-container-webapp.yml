@@ -23,12 +23,11 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
       run: |
-        docker logout
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - name: Build FollowingService Image
-      run: docker build . --file PuppyAPI/Dockerfile --tag Gaico1608/PuppyAPI:latest
-    - name: Push FollowingService Image
-      run: docker push Gaico1608/PuppyAPI:latest
+    - name: Build API Image
+      run: docker build . --file PuppyAPI/Dockerfile --tag gaico1608/puppyapi:latest
+    - name: Push API Image
+      run: docker push gaico1608/puppyapi:latest
   
   deploy:
     permissions:
