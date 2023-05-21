@@ -23,8 +23,8 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
       run: |
-        echo "$DOCKER_USER and $DOCKER_PASSWORD" --password-stdin
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+        docker logout
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build FollowingService Image
       run: docker build . --file PuppyAPI/Dockerfile --tag Gaico1608/PuppyAPI:latest
     - name: Push FollowingService Image
