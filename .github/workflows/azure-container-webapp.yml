@@ -19,22 +19,22 @@ permissions:
   contents: read
 
 jobs:
-  push_to_docker_registry:
-   # needs: build_and_test
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: docker login
-      env:
-        DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
-      run: |
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - name: Build API Image
-      run: docker build . --file PuppyPlatform/PuppyAPI/Dockerfile --tag gaico1608/puppyapi:latest
-    - name: Push API Image
-      run: docker push gaico1608/puppyapi:latest
+#   push_to_docker_registry:
+#    # needs: build_and_test
+#     name: Push Docker image to Docker Hub
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: docker login
+#       env:
+#         DOCKER_USER: ${{secrets.DOCKERHUB_USERNAME}}
+#         DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+#       run: |
+#         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+#     - name: Build API Image
+#       run: docker build . --file PuppyPlatform/PuppyAPI/Dockerfile --tag gaico1608/puppyapi:latest
+#     - name: Push API Image
+#       run: docker push gaico1608/puppyapi:latest
   
   azure_deployment:
       needs: push_to_docker_registry
@@ -48,7 +48,7 @@ jobs:
           with:
             login-server: ${{ env.REGISTRY_NAME }}.azurecr.io
             username: ${{ env.REGISTRY_NAME }}
-            password: ${{ secrets.REGISTRY_PASSWORD }}
+            password: ${{ secrets.PUPPYAPI_ACR_PASSWORD }}
 
         # Container build and push to a Azure Container Registry (ACR)
         - run: |
