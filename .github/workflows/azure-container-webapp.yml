@@ -1,7 +1,14 @@
 name: Build and deploy a container to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: CAMP  # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: 'PuppyAPI'
+  REGISTRY_NAME: 'PuppyAPI'
+  CLUSTER_NAME: 'AKSCAMP'
+  NAMESPACE: 'default'
+  CLUSTER_RESOURCE_GROUP: 'CAMP'
+  SECRET: 'githubaction'
+  APP_VERSION: "v0.1.1"
+  APP_NAME: 'PuppyAPI'
 
 on:
   push:
