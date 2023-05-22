@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["PuppyAPI/PuppyAPI.csproj", "PuppyAPI/"]
+COPY ["PuppyPlatform/PuppyAPI/PuppyAPI.csproj", "PuppyAPI/"]
 RUN dotnet restore "PuppyAPI/PuppyAPI.csproj"
 COPY . .
-WORKDIR "/src/PuppyAPI"
+WORKDIR "/src/PuppyPlatform/PuppyAPI"
 RUN dotnet build "PuppyAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
