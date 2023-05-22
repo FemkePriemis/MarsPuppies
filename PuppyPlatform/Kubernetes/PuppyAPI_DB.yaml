@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: puppyapiservice-db-mssql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: puppyapiservice-db-mssql
+  type: ClusterIP
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: puppyapiservice-db-mssql
+spec:
+  selector:
+    matchLabels:
+      app: puppyapiservice-db-mssql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: puppyapiservice-db-mssql
+    spec:
+      containers:
+      - image: mcr.microsoft.com/mssql/server:2022-latest
+        name: puppyapiservice-db-mssql
+        env:
+          # Use secret in real usage
+        - name: MSSQL_ROOT_PASSWORD
+          valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: PWD
+        - name: ACCEPT_EULA
+          value: 'y'
+        ports:
+        - containerPort: 3306
+          name: mssql
+        volumeMounts:
+        - name: mssql-persistent-storage-puppyapiservice
+          mountPath: /var/lib/mssql
+      volumes:
+      - name: mssql-persistent-storage-puppyapiservice
+        persistentVolumeClaim:
+          claimName: mssql-pv-claim-puppyapiservice
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mssql-pv-volume-puppyapiservice
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/followingdata"
+---
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pv-claim-puppyapiservice
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,105 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: puppyapi-service
+  labels:
+    app: puppyapi-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: puppyapi-service
+  template:
+    metadata:
+      labels:
+        app: puppyapi-service
+    spec:
+      containers:
+      - name: puppyapi-service
+        image: gaico1608/puppyapi:latest
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: 500m
+          requests:
+            cpu: 250m
+        ports:
+          - containerPort: 80
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: PORT
+
+          - name: ASPNETCORE_URLS
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: ASPNETCORE_URLS
+
+          - name: ASPNETCORE_ENVIRONMENT
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: ASPNETCORE_ENVIRONMENT
+
+          - name: SERVER
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: SERVER
+
+          - name: DATABASE
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: DATABASE
+
+          - name: UID
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: UID
+
+          - name: PWD
+            valueFrom:
+              configMapKeyRef: 
+                name: puppyapiservice-db-configmap
+                key: PWD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: puppyapiservice
+spec:
+  selector:
+    app: puppyapi-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+--- 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: puppyapi-service-ingress
+    annotations: 
+      kubernetes.io/ingress.class: "nginx"
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+      nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  rules:
+    - host: campgaico.com
+    - http:
+        paths:
+          - path: /puppyapiservice(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: puppyapiservice
+                port:
+                  number: 80

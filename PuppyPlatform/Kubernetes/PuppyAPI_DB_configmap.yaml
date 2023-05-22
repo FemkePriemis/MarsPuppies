@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: puppyapiservice-db-configmap
+data:
+  ASPNETCORE_ENVIRONMENT: "Development"
+  ASPNETCORE_URLS: "http://+:80"
+  SERVER: "puppyapiservice-db-mssql"
+  PORT: "3306"
+  DATABASE: "CAMP"
+  UID: "root"      # maybe put this in secret config?
+  PWD: "banaan123" # maybe put this in secret config?
