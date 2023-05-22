@@ -26,7 +26,7 @@ var connectionString =
     $" Database={Environment.GetEnvironmentVariable("DATABASE")};" +
     $" Integrated Security=sspi;" +
     $" TrustServerCertificate=True;" +
-    $" MultipleActiveResultSets=true" +
+    $" MultipleActiveResultSets=true;" +
     $" User Id={Environment.GetEnvironmentVariable("UID")};" +
     $" Password={Environment.GetEnvironmentVariable("PWD")};";
 Console.WriteLine(connectionString); //TODO rm
