@@ -19,7 +19,7 @@ builder.Services.AddCors();
 builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum visualization
 var connectionString= "";
 
-if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+if (Environment.GetEnvironmentVariable("SERVER") == null)
 {
     connectionString = builder.Configuration.GetConnectionString("PuppyAPIContext");
 }
