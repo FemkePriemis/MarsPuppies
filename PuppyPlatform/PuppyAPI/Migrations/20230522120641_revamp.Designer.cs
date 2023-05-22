@@ -12,8 +12,8 @@ using PuppyAPI.Database;
 namespace PuppyAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230323210509_ReworkIDs3")]
-    partial class ReworkIDs3
+    [Migration("20230522120641_revamp")]
+    partial class revamp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,7 +141,7 @@ namespace PuppyAPI.Migrations
 
                     b.HasIndex("DogGUID");
 
-                    b.ToTable("ActivityGrade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHealthStatus", b =>
@@ -150,35 +150,16 @@ namespace PuppyAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("HealthStateGUID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HealthstateGUID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Healthstate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime2");
 
                     b.HasKey("HealthstatusGUID");
 
-                    b.HasIndex("HealthstateGUID");
-
                     b.ToTable("HealthStatus");
-                });
-
-            modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHealthstate", b =>
-                {
-                    b.Property<Guid>("HealthstateGUID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Healthstate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("HealthstateGUID");
-
-                    b.ToTable("HealthStates");
                 });
 
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHeartrate", b =>
@@ -235,9 +216,6 @@ namespace PuppyAPI.Migrations
                     b.Property<Guid>("DogGUID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("DogID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Injury")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -273,6 +251,26 @@ namespace PuppyAPI.Migrations
                     b.HasIndex("DogGUID");
 
                     b.ToTable("Medication");
+                });
+
+            modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFRefreshToken", b =>
+                {
+                    b.Property<Guid>("AccessGUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserGUID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AccessGUID");
+
+                    b.HasIndex("UserGUID");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFRole", b =>
@@ -318,12 +316,16 @@ namespace PuppyAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Password")
+                    b.Property<byte[]>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<Guid>("RoleGUID")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Salt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -393,17 +395,6 @@ namespace PuppyAPI.Migrations
                     b.Navigation("Dog");
                 });
 
-            modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHealthStatus", b =>
-                {
-                    b.HasOne("PuppyAPI.Database.EFmodels.EFHealthstate", "Healthstate")
-                        .WithMany()
-                        .HasForeignKey("HealthstateGUID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Healthstate");
-                });
-
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFHeartrate", b =>
                 {
                     b.HasOne("PuppyAPI.Database.EFmodels.EFDog", "Dog")
@@ -446,6 +437,17 @@ namespace PuppyAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Dog");
+                });
+
+            modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFRefreshToken", b =>
+                {
+                    b.HasOne("PuppyAPI.Database.EFmodels.EFUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserGUID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PuppyAPI.Database.EFmodels.EFTemperature", b =>

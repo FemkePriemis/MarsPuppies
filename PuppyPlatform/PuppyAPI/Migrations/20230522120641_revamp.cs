@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PuppyAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class RebaseComplete : Migration
+    public partial class revamp : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,15 +37,16 @@ namespace PuppyAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HealthStates",
+                name: "HealthStatus",
                 columns: table => new
                 {
-                    HealthstateGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Healthstate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    HealthstatusGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Healthstate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HealthStates", x => x.HealthstateGUID);
+                    table.PrimaryKey("PK_HealthStatus", x => x.HealthstatusGUID);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,45 +59,6 @@ namespace PuppyAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.RoleGUID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HealthStatus",
-                columns: table => new
-                {
-                    HealthstatusGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HealthstateGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HealthStatus", x => x.HealthstatusGUID);
-                    table.ForeignKey(
-                        name: "FK_HealthStatus_HealthStates_HealthstateGUID",
-                        column: x => x.HealthstateGUID,
-                        principalTable: "HealthStates",
-                        principalColumn: "HealthstateGUID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    RoleGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserGUID);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_RoleGUID",
-                        column: x => x.RoleGUID,
-                        principalTable: "Roles",
-                        principalColumn: "RoleGUID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,7 +98,28 @@ namespace PuppyAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ActivityGrade",
+                name: "Users",
+                columns: table => new
+                {
+                    UserGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    RoleGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserGUID);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleGUID",
+                        column: x => x.RoleGUID,
+                        principalTable: "Roles",
+                        principalColumn: "RoleGUID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
                 columns: table => new
                 {
                     GradeGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -147,9 +130,9 @@ namespace PuppyAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActivityGrade", x => x.GradeGUID);
+                    table.PrimaryKey("PK_Grades", x => x.GradeGUID);
                     table.ForeignKey(
-                        name: "FK_ActivityGrade_Dog_DogGUID",
+                        name: "FK_Grades_Dog_DogGUID",
                         column: x => x.DogGUID,
                         principalTable: "Dog",
                         principalColumn: "DogGUID",
@@ -201,7 +184,6 @@ namespace PuppyAPI.Migrations
                 columns: table => new
                 {
                     InjuryGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DogID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DogGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Injury = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InjuryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -238,6 +220,45 @@ namespace PuppyAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Temperature",
+                columns: table => new
+                {
+                    TemperatureGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DogGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TemperatureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Temperature = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Temperature", x => x.TemperatureGUID);
+                    table.ForeignKey(
+                        name: "FK_Temperature_Dog_DogGUID",
+                        column: x => x.DogGUID,
+                        principalTable: "Dog",
+                        principalColumn: "DogGUID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    AccessGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.AccessGUID);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Users_UserGUID",
+                        column: x => x.UserGUID,
+                        principalTable: "Users",
+                        principalColumn: "UserGUID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Relation",
                 columns: table => new
                 {
@@ -262,31 +283,6 @@ namespace PuppyAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Temperature",
-                columns: table => new
-                {
-                    TemperatureGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DogGUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TemperatureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Temperature = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Temperature", x => x.TemperatureGUID);
-                    table.ForeignKey(
-                        name: "FK_Temperature_Dog_DogGUID",
-                        column: x => x.DogGUID,
-                        principalTable: "Dog",
-                        principalColumn: "DogGUID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ActivityGrade_DogGUID",
-                table: "ActivityGrade",
-                column: "DogGUID");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Dog_BehaviourGUID",
                 table: "Dog",
@@ -297,6 +293,15 @@ namespace PuppyAPI.Migrations
                 table: "Dog",
                 column: "BiometricsGUID");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Dog_HealthstatusGUID",
+                table: "Dog",
+                column: "HealthstatusGUID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Grades_DogGUID",
+                table: "Grades",
+                column: "DogGUID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Heartrate_DogGUID",
@@ -317,6 +322,11 @@ namespace PuppyAPI.Migrations
                 name: "IX_Medication_DogGUID",
                 table: "Medication",
                 column: "DogGUID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserGUID",
+                table: "RefreshTokens",
+                column: "UserGUID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Relation_DogGUID",
@@ -343,7 +353,7 @@ namespace PuppyAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ActivityGrade");
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Heartrate");
@@ -356,6 +366,9 @@ namespace PuppyAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Medication");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "Relation");
@@ -380,9 +393,6 @@ namespace PuppyAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "HealthStatus");
-
-            migrationBuilder.DropTable(
-                name: "HealthStates");
         }
     }
 }

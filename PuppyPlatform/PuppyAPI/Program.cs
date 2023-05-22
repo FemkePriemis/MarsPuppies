@@ -17,19 +17,27 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
 builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum visualization
+var connectionString= "";
 
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    connectionString = builder.Configuration.GetConnectionString("PuppyAPIContext");
+}
 
-// Add services to the container.
-// "Data Source=FemkeLenovo;Database=CAMP;Integrated Security=sspi; TrustServerCertificate=True; MultipleActiveResultSets=true"
-var connectionString =
-    $" Data Source={Environment.GetEnvironmentVariable("SERVER")};" +
-    $" Database={Environment.GetEnvironmentVariable("DATABASE")};" +
-    $" Integrated Security=false;" +
-    $" Trusted_Connection= false;" +
-    $" TrustServerCertificate=True;" +
-    $" MultipleActiveResultSets=true;" +
-    $" User Id={Environment.GetEnvironmentVariable("UID")};" +
-    $" Password={Environment.GetEnvironmentVariable("PWD")};";
+else
+{
+    // Add services to the container.
+    // "Data Source=FemkeLenovo;Database=CAMP;Integrated Security=sspi; TrustServerCertificate=True; MultipleActiveResultSets=true"
+    connectionString =
+       $" Data Source={Environment.GetEnvironmentVariable("SERVER")};" +
+       $" Database={Environment.GetEnvironmentVariable("DATABASE")};" +
+       $" Integrated Security=false;" +
+       $" Trusted_Connection= false;" +
+       $" TrustServerCertificate=True;" +
+       $" MultipleActiveResultSets=true;" +
+       $" User Id={Environment.GetEnvironmentVariable("UID")};" +
+       $" Password={Environment.GetEnvironmentVariable("PWD")};"; 
+}
 Console.WriteLine(connectionString); //TODO rm
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
