@@ -22,9 +22,10 @@ builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum v
 // Add services to the container.
 // "Data Source=FemkeLenovo;Database=CAMP;Integrated Security=sspi; TrustServerCertificate=True; MultipleActiveResultSets=true"
 var connectionString =
-    $"Data Source={Environment.GetEnvironmentVariable("SERVER")};" +
+    $" Data Source={Environment.GetEnvironmentVariable("SERVER")};" +
     $" Database={Environment.GetEnvironmentVariable("DATABASE")};" +
-    $" Integrated Security=sspi;" +
+    $" Integrated Security=false;" +
+    $" Trusted_Connection= false;" +
     $" TrustServerCertificate=True;" +
     $" MultipleActiveResultSets=true;" +
     $" User Id={Environment.GetEnvironmentVariable("UID")};" +
@@ -33,7 +34,7 @@ Console.WriteLine(connectionString); //TODO rm
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     //options.UseSqlServer(builder.Configuration.GetConnectionString("PuppyAPIContext")));
-    options.UseSqlServer(connectionString)); //mssql?
+    options.UseSqlServer(connectionString)); //mssql
 
 builder.Services.Configure<JwtAuthenticationConfig>(builder.Configuration.GetSection("JwtAuthentication"));
 

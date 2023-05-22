@@ -4,7 +4,7 @@ metadata:
   name: puppyapiservice-db-mssql
 spec:
   ports:
-  - port: 3306
+  - port: 1433
   selector:
     app: puppyapiservice-db-mssql
   type: ClusterIP
@@ -30,7 +30,7 @@ spec:
         name: puppyapiservice-db-mssql
         env:
           # Use secret in real usage
-        - name: MSSQL_ROOT_PASSWORD
+        - name: MSSQL_SA_PASSWORD
           valueFrom:
               configMapKeyRef: 
                 name: puppyapiservice-db-configmap
@@ -38,7 +38,7 @@ spec:
         - name: ACCEPT_EULA
           value: 'y'
         ports:
-        - containerPort: 3306
+        - containerPort: 1433
           name: mssql
         volumeMounts:
         - name: mssql-persistent-storage-puppyapiservice

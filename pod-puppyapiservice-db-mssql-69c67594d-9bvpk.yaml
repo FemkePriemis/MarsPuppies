@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-05-22T08:42:07Z"
+  generateName: puppyapiservice-db-mssql-69c67594d-
+  labels:
+    app: puppyapiservice-db-mssql
+    pod-template-hash: 69c67594d
+  name: puppyapiservice-db-mssql-69c67594d-9bvpk
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: puppyapiservice-db-mssql-69c67594d
+    uid: c88963cb-fca5-43c7-849d-6814645ba937
+  resourceVersion: "3991"
+  uid: 0eac6457-10b8-4864-b863-078ca5745a2e
+spec:
+  containers:
+  - env:
+    - name: MSSQL_SA_PASSWORD
+      valueFrom:
+        configMapKeyRef:
+          key: PWD
+          name: puppyapiservice-db-configmap
+    - name: ACCEPT_EULA
+      value: "y"
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    imagePullPolicy: IfNotPresent
+    name: puppyapiservice-db-mssql
+    ports:
+    - containerPort: 1433
+      name: mssql
+      protocol: TCP
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/mssql
+      name: mssql-persistent-storage-puppyapiservice
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-6wm52
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: mssql-persistent-storage-puppyapiservice
+    persistentVolumeClaim:
+      claimName: mssql-pv-claim-puppyapiservice
+  - name: kube-api-access-6wm52
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-05-22T08:42:07Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-05-22T08:42:09Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-05-22T08:42:09Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-05-22T08:42:07Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://60cc021f02551ac55e8b104c02ac96c9fa909322ebaed37fbef2827f3b649a1d
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    imageID: docker-pullable://mcr.microsoft.com/mssql/server@sha256:603a19e6c5be21ca615de325a2fb758827558de0a8c4a9925256a4329b4e41be
+    lastState: {}
+    name: puppyapiservice-db-mssql
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-05-22T08:42:08Z"
+  hostIP: 192.168.49.2
+  phase: Running
+  podIP: 10.244.0.9
+  podIPs:
+  - ip: 10.244.0.9
+  qosClass: BestEffort
+  startTime: "2023-05-22T08:42:07Z"

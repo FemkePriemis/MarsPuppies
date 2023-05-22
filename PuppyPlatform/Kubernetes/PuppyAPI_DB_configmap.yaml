@@ -6,7 +6,7 @@ data:
   ASPNETCORE_ENVIRONMENT: "Development"
   ASPNETCORE_URLS: "http://+:80"
   SERVER: "puppyapiservice-db-mssql"
-  PORT: "3306"
+  PORT: "1433"
   DATABASE: "CAMP"
-  UID: "root"      # maybe put this in secret config?
-  PWD: "banaan123" # maybe put this in secret config?
+  UID: "sa"      # maybe put this in secret config?
+  PWD: "banaan123Abc!" # maybe put this in secret config?
