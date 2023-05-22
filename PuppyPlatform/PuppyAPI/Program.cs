@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in for enum v
 var connectionString =
     $"Data Source={Environment.GetEnvironmentVariable("SERVER")};" +
     $" Database={Environment.GetEnvironmentVariable("DATABASE")};" +
-    $" Integrated Security=sspy;" +
+    $" Integrated Security=sspi;" +
     $" TrustServerCertificate=True;" +
     $" MultipleActiveResultSets=true" +
     $" User Id={Environment.GetEnvironmentVariable("UID")};" +
