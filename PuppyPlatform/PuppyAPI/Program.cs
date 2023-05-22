@@ -57,6 +57,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+    foreach (var migration in dbContext.Database.GetPendingMigrations())
+    {
+        Console.WriteLine("Running Migrations: " + migration);
+    }
+    dbContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
