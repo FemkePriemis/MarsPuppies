@@ -36,35 +36,35 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-  unittest:
-    needs: build
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+#   unittest:
+#     needs: build
+#     runs-on: windows-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v3
+#       with:
+#         dotnet-version: ${{ env.DOTNET_VERSION }}
         
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.x.x
+#     - name: Install .NET Core
+#       uses: actions/setup-dotnet@v2
+#       with:
+#         dotnet-version: 6.x.x
 
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Setup MSBuild.exe
+#       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.5
+#     - name: Setup NuGet
+#       uses: NuGet/setup-nuget@v1.0.5
 
-    - name: Restore NuGet packages
-      run: nuget restore PuppyPlatform/PuppyPlatform.sln
+#     - name: Restore NuGet packages
+#       run: nuget restore PuppyPlatform/PuppyPlatform.sln
       
-    - name: Build the Solution
-      run: msbuild PuppyPlatform/PuppyPlatform.sln /t:PuppyAPI
+#     - name: Build the Solution
+#       run: msbuild PuppyPlatform/PuppyPlatform.sln /t:PuppyAPI
     
-    - name: Test
-      run: dotnet test PuppyPlatform/PuppyPlatform.sln --no-restore --verbosity normal
+#     - name: Test
+#       run: dotnet test PuppyPlatform/PuppyPlatform.sln --no-restore --verbosity normal
           
       
   sonarcloud:
@@ -127,6 +127,8 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_MarsPuppies" /o:"femkepriemis" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           msbuild PuppyPlatform/PuppyPlatform.sln --no-incremental
+          
           dotnet test PuppyPlatform/PuppyPlatform.sln --collect:"XPlat Code Coverage" --results-directory:TestResults --logger:"trx;LogFileName=TestResults/test-results.xml" --verbosity normal
-          PuppyPlatform/PuppyPlatform.sln
+          mv TestResults/test-results.xml test-results.xml
+         
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
