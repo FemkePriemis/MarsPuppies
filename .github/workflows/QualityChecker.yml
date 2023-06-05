@@ -129,6 +129,6 @@ jobs:
           
           msbuild PuppyPlatform/PuppyPlatform.sln /t:PuppyAPI
               
-          dotnet test --collect:"coverage"
+          dotnet test PuppyPlatform/PuppyPlatform.sln --collect:"coverage"
          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
