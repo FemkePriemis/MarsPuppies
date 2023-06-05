@@ -125,9 +125,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_MarsPuppies" /o:"femkepriemis" /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FemkePriemis_MarsPuppies" 
+          /o:"femkepriemis" 
+          /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}" 
+          /d:sonar.host.url="https://sonarcloud.io"
+          /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          
           msbuild PuppyPlatform/PuppyPlatform.sln --no-incremental
           
-          dotnet test PuppyPlatform/PuppyPlatform.sln --collect:"XPlat Code Coverage" --results-directory:TestResults --logger:"trx;LogFileName=TestResults/test-results.xml" --verbosity normal
+          dotnet test PuppyPlatform/PuppyPlatform.sln --collect:"coverage"
          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONARCLOUD_TOKEN }}"
